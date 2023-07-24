@@ -1,3 +1,5 @@
+BTW Utils functions
+
 BTW --- Color creator ---
 HOW IZ I color YR red AN YR green AN YR blue AN YR alpha
 	I HAS A array ITZ A BUKKIT
@@ -70,3 +72,5 @@ HOW IZ I getIndex YR i
 		OMG 9, FOUND YR "nine"
 	OIC
 IF U SAY SO
+
+BTW End of utils functions
