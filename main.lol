@@ -87,7 +87,7 @@ O HAI IM Player
 	I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 231.0 AN YR 240.0 MKAY
 	I HAS A ORIGIN ITZ I IZ vector2 YR 0.0 AN YR 0.0 MKAY
 
-	HOW IZ I init
+	HOW IZ I initPlayer
 		ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/a_fk_leaf.png" MKAY
 		ME'Z position R I IZ rectangle YR 100.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
 		ME'Z health R 3
@@ -118,13 +118,13 @@ O HAI IM Player
 		O RLY?, YA RLY, ME'Z position'Z x R possibleNewPos, OIC
 	IF U SAY SO
 
-	HOW IZ I update
+	HOW IZ I updatePlayer
 		ME IZ movement MKAY
 		ME'Z hitbox'Z x R SUM OF ME'Z position'Z x AN 15
 		ME'Z hitbox'Z y R SUM OF ME'Z position'Z y AN 15
 	IF U SAY SO
 
-	HOW IZ I draw
+	HOW IZ I drawPlayer
 		I IZ drawTexturePro ...
 			YR ME'Z texture AN YR ME'Z SOURCE AN YR ME'Z position ...
 			AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
@@ -134,22 +134,51 @@ O HAI IM Player
 KTHX
 BTW --- End of Player object ---
 
+O HAI IM Block
+    I HAS A texture
+
+    I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 50.0 AN YR 80.0 MKAY
+    I HAS A ORIGIN ITZ I IZ vector2 YR 25.0 AN YR 40.0 MKAY
+
+    HOW IZ I initBlock
+        ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/syrup.png" MKAY
+    IF U SAY SO
+
+    HOW IZ I drawBlock YR pos
+        IM IN YR drawBlocks UPPIN YR i WILE DIFFRINT i AN 6
+            I IZ drawTexturePro ...
+                YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS i ...
+                AN YR ME'Z ORIGIN AN YR -1.570796 AN YR white ...
+            MKAY
+        IM OUTTA YR drawBlocks
+    IF U SAY SO
+KTHX
+
 I IZ RAYLIB'Z WINDUS YR 1260 AN YR 720 AN YR "Flag Wars 3: Canadian Revenge" MKAY
 I IZ RAYLIB'Z FPS YR 60 MKAY
 
 I HAS A player ITZ LIEK A Player
-player IZ init MKAY
+player IZ initPlayer MKAY
+
+I HAS A block ITZ LIEK A Block
+block IZ initBlock MKAY
+I HAS A blockPosition ITZ A BUKKIT
+IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
+    blockPosition HAS A SRS n ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+IM OUTTA YR setPosition
 
 IM IN YR loop
-    player IZ update MKAY
+    player IZ updatePlayer MKAY
 
     I IZ RAYLIB'Z BEGINDRAW MKAY
     I IZ RAYLIB'Z BAKGROUND YR 0 AN YR 0 AN YR 0 AN YR 255 MKAY
-    I IZ player'Z draw MKAY
+    I IZ player'Z drawPlayer MKAY
+    I IZ block'Z drawBlock YR blockPosition MKAY
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR loop
 
+I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
 I IZ RAYLIB'Z CLOZEWINDUS MKAY
 

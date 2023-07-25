@@ -3,23 +3,33 @@ CAN HAS RAYLIB?
 
 BTW INCLUDE "utils.lol" PLS
 BTW INCLUDE "player.lol" PLS
+BTW INCLUDE "block.lol" PLS
 
 I IZ RAYLIB'Z WINDUS YR 1260 AN YR 720 AN YR "Flag Wars 3: Canadian Revenge" MKAY
 I IZ RAYLIB'Z FPS YR 60 MKAY
 
 I HAS A player ITZ LIEK A Player
-player IZ init MKAY
+player IZ initPlayer MKAY
+
+I HAS A block ITZ LIEK A Block
+block IZ initBlock MKAY
+I HAS A blockPosition ITZ A BUKKIT
+IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
+    blockPosition HAS A SRS n ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+IM OUTTA YR setPosition
 
 IM IN YR loop
-    player IZ update MKAY
+    player IZ updatePlayer MKAY
 
     I IZ RAYLIB'Z BEGINDRAW MKAY
     I IZ RAYLIB'Z BAKGROUND YR 0 AN YR 0 AN YR 0 AN YR 255 MKAY
-    I IZ player'Z draw MKAY
+    I IZ player'Z drawPlayer MKAY
+    I IZ block'Z drawBlock YR blockPosition MKAY
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR loop
 
+I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
 I IZ RAYLIB'Z CLOZEWINDUS MKAY
 

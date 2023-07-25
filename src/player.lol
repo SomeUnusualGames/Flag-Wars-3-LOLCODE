@@ -8,7 +8,7 @@ O HAI IM Player
 	I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 231.0 AN YR 240.0 MKAY
 	I HAS A ORIGIN ITZ I IZ vector2 YR 0.0 AN YR 0.0 MKAY
 
-	HOW IZ I init
+	HOW IZ I initPlayer
 		ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/a_fk_leaf.png" MKAY
 		ME'Z position R I IZ rectangle YR 100.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
 		ME'Z health R 3
@@ -39,13 +39,13 @@ O HAI IM Player
 		O RLY?, YA RLY, ME'Z position'Z x R possibleNewPos, OIC
 	IF U SAY SO
 
-	HOW IZ I update
+	HOW IZ I updatePlayer
 		ME IZ movement MKAY
 		ME'Z hitbox'Z x R SUM OF ME'Z position'Z x AN 15
 		ME'Z hitbox'Z y R SUM OF ME'Z position'Z y AN 15
 	IF U SAY SO
 
-	HOW IZ I draw
+	HOW IZ I drawPlayer
 		I IZ drawTexturePro ...
 			YR ME'Z texture AN YR ME'Z SOURCE AN YR ME'Z position ...
 			AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
