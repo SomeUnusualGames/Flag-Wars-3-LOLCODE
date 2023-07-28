@@ -47,6 +47,7 @@ star IZ initStar MKAY
 I HAS A starPosition ITZ A BUKKIT
 I HAS A starX ITZ 40.0
 I HAS A starY ITZ 30.0
+I HAS A starIndex ITZ 0
 IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 99 BTW 9 * 11
     I HAS A row ITZ QUOSHUNT OF n AN 11
     I HAS A col ITZ MOD OF n AN 11
@@ -58,6 +59,7 @@ IM OUTTA YR setPosition
 
 IM IN YR mainLoop
     player IZ updatePlayer MKAY
+    I IZ star'Z updateStar YR starPosition MKAY
 
     I IZ RAYLIB'Z BEGINDRAW MKAY
     I IZ RAYLIB'Z BAKGROUND YR 0 AN YR 0 AN YR 0 AN YR 255 MKAY

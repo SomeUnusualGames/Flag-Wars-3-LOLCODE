@@ -1,0 +1,4 @@
+- A way to get the rightmost and leftmost star to check when to move down
+- Player and random enemies shooting
+- Bullet collision detection with player and the blocks
+- Player death
