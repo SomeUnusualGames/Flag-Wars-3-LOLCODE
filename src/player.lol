@@ -2,16 +2,16 @@ BTW --- Player object ---
 O HAI IM Player
 	I HAS A texture
 	I HAS A hitbox
-	I HAS A position ITZ A BUKKIT
-	I HAS A health ITZ A NUMBAR
+	I HAS A position
+	I HAS A lifes ITZ A NUMBR
 
 	I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 231.0 AN YR 240.0 MKAY
 	I HAS A ORIGIN ITZ I IZ vector2 YR 0.0 AN YR 0.0 MKAY
 
 	HOW IZ I initPlayer
 		ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/a_fk_leaf.png" MKAY
-		ME'Z position R I IZ rectangle YR 100.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
-		ME'Z health R 3
+		ME'Z position R I IZ rectangle YR 600.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
+		ME'Z lifes R 3
 		ME'Z hitbox R I IZ rectangle YR 100.0 AN YR 660.0 AN YR 20.0 AN YR 20.0 MKAY
 	IF U SAY SO
 

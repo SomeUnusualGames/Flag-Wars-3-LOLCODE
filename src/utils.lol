@@ -47,6 +47,7 @@ I HAS A KEYA ITZ 65
 I HAS A KEYS ITZ 83
 I HAS A KEYD ITZ 68
 I HAS A KEYZ ITZ 90
+I HAS A KEYSPACE ITZ 32
 
 BTW DrawTexturePro wrapper
 HOW IZ I drawTexturePro YR texture AN YR source AN YR dest AN YR origin AN YR rotation AN YR color	

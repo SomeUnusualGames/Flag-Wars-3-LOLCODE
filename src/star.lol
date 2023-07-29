@@ -18,29 +18,19 @@ O HAI IM Star
         BOTH SAEM ME'Z timer AN SMALLR OF ME'Z timer AN 0
         O RLY?, YA RLY
             ME'Z timer R ME'Z MAXTIMER
-            IM IN YR moveStars UPPIN YR n WILE DIFFRINT n AN 99
-                I HAS A row ITZ QUOSHUNT OF n AN 11
-                I HAS A col ITZ MOD OF n AN 11
-                BOTH SAEM MOD OF SUM OF row AN col AN 2 AN 0
-                O RLY?, YA RLY
-                    I HAS A pos ITZ starPosition'Z SRS n
-                    pos'Z x R SUM OF pos'Z x AN 20.0
-                OIC
+            IM IN YR moveStars UPPIN YR n WILE DIFFRINT n AN 50
+                I HAS A pos ITZ starPosition'Z SRS n
+                pos'Z x R SUM OF pos'Z x AN 20.0
             IM OUTTA YR moveStars
         OIC
     IF U SAY SO
 
     HOW IZ I drawStar YR pos
-        IM IN YR drawStars UPPIN YR n WILE DIFFRINT n AN 99
-            I HAS A row ITZ QUOSHUNT OF n AN 11
-            I HAS A col ITZ MOD OF n AN 11
-            BOTH SAEM MOD OF SUM OF row AN col AN 2 AN 0
-            O RLY?, YA RLY
-                I IZ drawTexturePro ...
-                    YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS n ...
-                    AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
-                MKAY
-            OIC
+        IM IN YR drawStars UPPIN YR n WILE DIFFRINT n AN 50
+            I IZ drawTexturePro ...
+                YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS n ...
+                AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
+            MKAY
         IM OUTTA YR drawStars
     IF U SAY SO
 KTHX

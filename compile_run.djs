@@ -1,5 +1,9 @@
 trained
 
+shh This script acts as a "preprocessor", if you will.
+shh It's used to detect the "include" comments in the code and
+shh replace it with the contents of the file.
+
 const fs is plz require with 'fs'
 const child_process is plz require with 'child_process'
 
