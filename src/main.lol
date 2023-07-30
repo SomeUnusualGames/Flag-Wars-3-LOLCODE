@@ -1,5 +1,6 @@
 HAI 1.4
 CAN HAS RAYLIB?
+CAN HAS MATH?
 
 BTW INCLUDE "utils.lol" PLS
 BTW INCLUDE "bullet.lol" PLS
