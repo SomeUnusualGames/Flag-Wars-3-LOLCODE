@@ -16,13 +16,25 @@ O HAI IM Star
         ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/star.png" MKAY
     IF U SAY SO
 
-    HOW IZ I updateStar YR pos
+    HOW IZ I checkCollision YR pos AN YR alive AN YR bulletRect
+        IM IN YR checkStars UPPIN YR n WILE DIFFRINT n AN 50
+            I HAS A collision ITZ I IZ checkCollisionRecs YR pos'Z SRS n AN YR bulletRect MKAY
+            I HAS A isAlive ITZ alive'Z SRS n
+            BOTH OF collision AN isAlive
+            O RLY?, YA RLY
+                alive'Z SRS n R FAIL
+                FOUND YR WIN
+            OIC
+        IM OUTTA YR checkStars
+        FOUND YR FAIL
+    IF U SAY SO
+
+    HOW IZ I updateStar YR pos AN YR alive
         I HAS A moveDown ITZ FAIL
         ME'Z timer R DIFF OF ME'Z timer AN I IZ RAYLIB'Z GETFRAMETIME MKAY
         BOTH SAEM ME'Z timer AN SMALLR OF ME'Z timer AN 0
         O RLY?, YA RLY
             ME'Z timer R ME'Z MAXTIMER
-            BTW TODO: Check where the stars are moving, check for leftmost or rightmost star position, move accordingly
             I HAS A posToCheck ITZ A BUKKIT
             DIFFRINT ME'Z direction AN SMALLR OF ME'Z direction AN 0
             O RLY?, YA RLY
@@ -42,22 +54,25 @@ O HAI IM Star
             OIC
             IM IN YR moveStars UPPIN YR n WILE DIFFRINT n AN 50
                 I HAS A pos ITZ starPosition'Z SRS n
-                moveDown
-                O RLY?, YA RLY
-                    pos'Z y R SUM OF pos'Z y AN I IZ MATH'Z ABS YR ME'Z direction MKAY
-                NO WAI
-                    pos'Z x R SUM OF pos'Z x AN ME'Z direction
+                alive'Z SRS n, O RLY?, YA RLY
+                    moveDown, O RLY?, YA RLY
+                        pos'Z y R SUM OF pos'Z y AN I IZ MATH'Z ABS YR ME'Z direction MKAY
+                    NO WAI
+                        pos'Z x R SUM OF pos'Z x AN ME'Z direction
+                    OIC
                 OIC
             IM OUTTA YR moveStars
         OIC
     IF U SAY SO
 
-    HOW IZ I drawStar YR pos
+    HOW IZ I drawStar YR pos AN YR alive
         IM IN YR drawStars UPPIN YR n WILE DIFFRINT n AN 50
-            I IZ drawTexturePro ...
-                YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS n ...
-                AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
-            MKAY
+            alive'Z SRS n, O RLY?, YA RLY
+                I IZ drawTexturePro ...
+                    YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS n ...
+                    AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
+                MKAY
+            OIC
         IM OUTTA YR drawStars
     IF U SAY SO
 KTHX

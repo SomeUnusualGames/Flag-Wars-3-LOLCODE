@@ -52,6 +52,7 @@ IM OUTTA YR setPosition
 
 I HAS A star ITZ LIEK A Star
 star IZ initStar MKAY
+I HAS A starAlive ITZ A BUKKIT
 I HAS A starPosition ITZ A BUKKIT
 I HAS A starX ITZ 40.0
 I HAS A starY ITZ 30.0
@@ -63,17 +64,24 @@ IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 99 BTW 9 * 11
     BOTH SAEM MOD OF SUM OF row AN col AN 2 AN 0
     O RLY?, YA RLY
         starPosition HAS A SRS index ITZ I IZ rectangle YR SUM OF starX AN PRODUKT OF col AN 42.0 AN YR SUM OF starY AN PRODUKT OF row AN 40.0 AN YR 39.0 AN YR 37.0 MKAY
+        starAlive HAS A SRS index ITZ WIN
         index R SUM OF index AN 1
     OIC
 IM OUTTA YR setPosition
 
 IM IN YR mainLoop
     player IZ updatePlayer MKAY
-    I IZ star'Z updateStar YR starPosition MKAY
+    I IZ star'Z updateStar YR starPosition AN YR starAlive MKAY
 
     playerBullet'Z alive
     O RLY?, YA RLY
+        I HAS A destSize ITZ I IZ vector2 YR 20.0 AN YR 20.0 MKAY
+        I HAS A playerBulletRect ITZ playerBullet IZ getRect YR destSize MKAY
         playerBullet IZ updateBullet MKAY
+        star IZ checkCollision YR starPosition AN YR starAlive AN YR playerBulletRect MKAY
+        O RLY?, YA RLY
+            playerBullet'Z alive R FAIL
+        OIC
     OIC
 
     BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
@@ -93,7 +101,7 @@ IM IN YR mainLoop
     OIC
 
     I IZ block'Z drawBlock YR blockPosition MKAY
-    I IZ star'Z drawStar YR starPosition MKAY
+    I IZ star'Z drawStar YR starPosition AN YR starAlive MKAY
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR mainLoop

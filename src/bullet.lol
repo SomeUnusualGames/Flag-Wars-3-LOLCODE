@@ -22,6 +22,11 @@ O HAI IM Bullet
         ME'Z alive R WIN
     IF U SAY SO
 
+    HOW IZ I getRect YR destSize
+        I HAS A rect ITZ I IZ rectangle YR ME'Z position'Z x AN YR ME'Z position'Z y AN YR destSize'Z x AN YR destSize'Z y MKAY
+        FOUND YR rect
+    IF U SAY SO
+
     HOW IZ I updateBullet
         ME'Z position'Z y R SUM OF ME'Z position'Z y AN PRODUKT OF ME'Z speed AN I IZ RAYLIB'Z GETFRAMETIME MKAY
         DIFFRINT ME'Z position'Z y AN BIGGR OF ME'Z position'Z y AN -30

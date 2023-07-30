@@ -61,19 +61,12 @@ HOW IZ I drawTexturePro YR texture AN YR source AN YR dest AN YR origin AN YR ro
 	MKAY
 IF U SAY SO
 
-HOW IZ I getIndex YR i
-	i, WTF?
-		OMG 0, FOUND YR "zero"
-		OMG 1, FOUND YR "one"
-		OMG 2, FOUND YR "two"
-		OMG 3, FOUND YR "three"
-		OMG 4, FOUND YR "four"
-		OMG 5, FOUND YR "five"
-		OMG 6, FOUND YR "six"
-		OMG 7, FOUND YR "seven"
-		OMG 8, FOUND YR "eight"
-		OMG 9, FOUND YR "nine"
-	OIC
+HOW IZ I checkCollisionRecs YR rec1 AN YR rec2
+    I HAS A x1 ITZ DIFFRINT rec1'Z x AN BIGGR OF rec1'Z x AN SUM OF rec2'Z x AN rec2'Z width
+    I HAS A x2 ITZ DIFFRINT rec2'Z x AN BIGGR OF rec2'Z x AN SUM OF rec1'Z x AN rec1'Z width
+    I HAS A y1 ITZ DIFFRINT rec1'Z y AN BIGGR OF rec1'Z y AN SUM OF rec2'Z y AN rec2'Z height
+    I HAS A y2 ITZ DIFFRINT rec2'Z y AN BIGGR OF rec2'Z y AN SUM OF rec1'Z y AN rec1'Z height
+    FOUND YR ALL OF x1 AN x2 AN y1 AN y2 MKAY
 IF U SAY SO
 
-BTW End of utils functions
+BTW --- End of utils functions ---
