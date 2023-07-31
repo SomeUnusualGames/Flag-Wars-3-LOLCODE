@@ -23,6 +23,30 @@ O HAI IM Star
             BOTH OF collision AN isAlive
             O RLY?, YA RLY
                 alive'Z SRS n R FAIL
+                BOTH SAEM n AN ME'Z leftMost
+                O RLY?, YA RLY
+                    IM IN YR getNewLeft UPPIN YR i WILE DIFFRINT i AN 50
+                        I HAS A currentIndex ITZ SUM OF i AN n
+                        alive'Z SRS currentIndex, O RLY?, YA RLY
+                            ME'Z leftMost R currentIndex
+                            VISIBLE "new leftmost found"
+                            VISIBLE ME'Z leftMost
+                            FOUND YR WIN
+                        OIC
+                    IM OUTTA YR getNewLeft
+                    BTW No new leftMost star found... player won? Maybe check if leftMost = rightMost
+                MEBBE BOTH SAEM n AN ME'Z rightMost
+                    IM IN YR getNewLeft NERFIN YR i WILE DIFFRINT i AN -50
+                        I HAS A currentIndex ITZ SUM OF i AN n
+                        alive'Z SRS currentIndex, O RLY?, YA RLY
+                            ME'Z rightMost R currentIndex
+                            VISIBLE "new rightmost found"
+                            VISIBLE ME'Z rightMost
+                            FOUND YR WIN
+                        OIC
+                    IM OUTTA YR getNewLeft
+                    BTW No new rightMost star found... player won? Maybe check if leftMost = rightMost
+                OIC
                 FOUND YR WIN
             OIC
         IM OUTTA YR checkStars
@@ -39,14 +63,17 @@ O HAI IM Star
             DIFFRINT ME'Z direction AN SMALLR OF ME'Z direction AN 0
             O RLY?, YA RLY
                 posToCheck R pos'Z SRS ME'Z rightMost
-                BOTH SAEM posToCheck'Z x AN 1220
+                BTW 1220 - (rightMost-5) * (-20) | rightMost goes from 5 to 0 -> results in 0, 20, 40... 100 -> 1220, 1200...
+                I HAS A starLimit ITZ DIFF OF 1220 AN PRODUKT OF DIFF OF ME'Z rightMost AN 5 AN -20
+                BOTH SAEM posToCheck'Z x AN BIGGR OF posToCheck'Z x AN starLimit
                 O RLY?, YA RLY
                     moveDown R WIN
                     ME'Z direction R PRODUKT OF -1 AN ME'Z direction
                 OIC
             NO WAI
                 posToCheck R pos'Z SRS ME'Z leftMost
-                BOTH SAEM posToCheck'Z x AN 40
+                I HAS A starLimit ITZ SUM OF 40 AN PRODUKT OF ME'Z leftMost AN 20
+                BOTH SAEM posToCheck'Z x AN SMALLR OF posToCheck'Z x AN starLimit
                 O RLY?, YA RLY
                     moveDown R WIN
                     ME'Z direction R PRODUKT OF -1 AN ME'Z direction
