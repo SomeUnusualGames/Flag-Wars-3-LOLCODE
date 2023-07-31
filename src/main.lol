@@ -46,8 +46,12 @@ MKAY
 I HAS A block ITZ LIEK A Block
 block IZ initBlock MKAY
 I HAS A blockPosition ITZ A BUKKIT
+I HAS A blockStartX ITZ A BUKKIT
+I HAS A blockAlive ITZ A BUKKIT
 IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
     blockPosition HAS A SRS n ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+    blockStartX HAS A SRS n ITZ 0.0
+    blockAlive HAS A SRS n ITZ WIN
 IM OUTTA YR setPosition
 
 I HAS A star ITZ LIEK A Star
@@ -79,9 +83,9 @@ IM IN YR mainLoop
         I HAS A playerBulletRect ITZ playerBullet IZ getRect YR destSize MKAY
         playerBullet IZ updateBullet MKAY
         star IZ checkCollision YR starPosition AN YR starAlive AN YR playerBulletRect MKAY
-        O RLY?, YA RLY
-            playerBullet'Z alive R FAIL
-        OIC
+        O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
+        block IZ checkCollisionBlock YR blockPosition AN YR blockAlive AN YR blockStartX AN YR playerBulletRect MKAY
+        O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
     OIC
 
     BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
@@ -100,7 +104,7 @@ IM IN YR mainLoop
         I IZ playerBullet'Z drawBullet YR destSize MKAY
     OIC
 
-    I IZ block'Z drawBlock YR blockPosition MKAY
+    I IZ block'Z drawBlock YR blockPosition AN YR blockAlive AN YR blockStartX MKAY
     I IZ star'Z drawStar YR starPosition AN YR starAlive MKAY
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC

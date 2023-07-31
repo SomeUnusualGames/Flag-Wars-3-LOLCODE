@@ -73,13 +73,6 @@ HOW IZ I checkCollisionRecs YR rec1 AN YR rec2
     FOUND YR ALL OF x1 AN x2 AN y1 AN y2 MKAY
 IF U SAY SO
 
-OBTW
-BOTH SAEM <x> AN BIGGR OF <x> AN <y>   BTW x >= y
-BOTH SAEM <x> AN SMALLR OF <x> AN <y>  BTW x <= y
-DIFFRINT <x> AN SMALLR OF <x> AN <y>   BTW x > y
-DIFFRINT <x> AN BIGGR OF <x> AN <y>    BTW x < y
-TLDR
-
 BTW --- End of utils functions ---
 BTW --- Bullet object ---
 O HAI IM Bullet
@@ -187,19 +180,41 @@ BTW --- End of Player object ---
 O HAI IM Block
     I HAS A texture
 
-    I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 50.0 AN YR 80.0 MKAY
+    I HAS A source ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 50.0 AN YR 80.0 MKAY
     I HAS A ORIGIN ITZ I IZ vector2 YR 25.0 AN YR 40.0 MKAY
 
     HOW IZ I initBlock
         ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/syrup.png" MKAY
     IF U SAY SO
 
-    HOW IZ I drawBlock YR pos
+    HOW IZ I checkCollisionBlock YR pos AN YR alive AN YR blockStart AN YR bulletRect
+        IM IN YR checkBlocks UPPIN YR i WILE DIFFRINT i AN 6
+            I HAS A collision ITZ I IZ checkCollisionRecs YR pos'Z SRS i AN YR bulletRect MKAY
+            I HAS A isAlive ITZ alive'Z SRS i
+            BOTH OF collision AN isAlive
+            O RLY?, YA RLY
+                BOTH SAEM blockStart'Z SRS i AN 100
+                O RLY?, YA RLY
+                    alive'Z SRS i R FAIL
+                NO WAI
+                    blockStart'Z SRS i R SUM OF blockStart'Z SRS i AN 50.0                
+                OIC
+                FOUND YR WIN
+            OIC
+        IM OUTTA YR checkBlocks
+        FOUND YR FAIL
+    IF U SAY SO
+
+    HOW IZ I drawBlock YR pos AN YR alive AN YR startX
         IM IN YR drawBlocks UPPIN YR i WILE DIFFRINT i AN 6
-            I IZ drawTexturePro ...
-                YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS i ...
-                AN YR ME'Z ORIGIN AN YR -1.570796 AN YR white ...
-            MKAY
+            alive'Z SRS i
+            O RLY?, YA RLY
+                ME'Z source'Z x R startX'Z SRS i
+                I IZ drawTexturePro ...
+                    YR ME'Z texture AN YR ME'Z source AN YR pos'Z SRS i ...
+                    AN YR ME'Z ORIGIN AN YR -1.570796 AN YR white ...
+                MKAY
+            OIC
         IM OUTTA YR drawBlocks
     IF U SAY SO
 KTHX
@@ -322,8 +337,12 @@ MKAY
 I HAS A block ITZ LIEK A Block
 block IZ initBlock MKAY
 I HAS A blockPosition ITZ A BUKKIT
+I HAS A blockStartX ITZ A BUKKIT
+I HAS A blockAlive ITZ A BUKKIT
 IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
     blockPosition HAS A SRS n ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+    blockStartX HAS A SRS n ITZ 0.0
+    blockAlive HAS A SRS n ITZ WIN
 IM OUTTA YR setPosition
 
 I HAS A star ITZ LIEK A Star
@@ -355,9 +374,9 @@ IM IN YR mainLoop
         I HAS A playerBulletRect ITZ playerBullet IZ getRect YR destSize MKAY
         playerBullet IZ updateBullet MKAY
         star IZ checkCollision YR starPosition AN YR starAlive AN YR playerBulletRect MKAY
-        O RLY?, YA RLY
-            playerBullet'Z alive R FAIL
-        OIC
+        O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
+        block IZ checkCollisionBlock YR blockPosition AN YR blockAlive AN YR blockStartX AN YR playerBulletRect MKAY
+        O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
     OIC
 
     BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
@@ -376,7 +395,7 @@ IM IN YR mainLoop
         I IZ playerBullet'Z drawBullet YR destSize MKAY
     OIC
 
-    I IZ block'Z drawBlock YR blockPosition MKAY
+    I IZ block'Z drawBlock YR blockPosition AN YR blockAlive AN YR blockStartX MKAY
     I IZ star'Z drawStar YR starPosition AN YR starAlive MKAY
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
