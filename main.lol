@@ -76,7 +76,6 @@ IF U SAY SO
 BTW --- End of utils functions ---
 BTW --- Bullet object ---
 O HAI IM Bullet
-
     I HAS A texture
     I HAS A position ITZ I IZ vector2 YR 0.0 AN YR 0.0 MKAY
     I HAS A originRect ITZ A BUKKIT
@@ -84,11 +83,20 @@ O HAI IM Bullet
     I HAS A speed ITZ A NUMBAR
     I HAS A alive ITZ A TROOF
 
+    OBTW Do not fall in the trap of doing this:
+            ME'Z texture R I IZ RAYLIB ...
+            ME'Z alive R FAIL
+        if I'm not mistaken, in this way I'm setting the variables on the
+        **parent class** and not the **child class**, which means if the
+        parent class inherits more than once, the second object will overwrite
+        the first one, which obviously is not want we intend.
+        With "HAS A" we are creating a new variable within the child class.
+    TLDR
     HOW IZ I initBullet YR texturePath AN YR originRect AN YR origin
-        ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR texturePath MKAY
-        ME'Z alive R FAIL
-        ME'Z originRect R originRect
-        ME'Z origin R origin
+        ME HAS A texture ITZ I IZ RAYLIB'Z LOADTEXTURE YR texturePath MKAY
+        ME HAS A alive ITZ FAIL
+        ME HAS A originRect ITZ originRect
+        ME HAS A origin ITZ origin
     IF U SAY SO
 
     HOW IZ I setBullet YR pos AN YR speed
@@ -98,14 +106,11 @@ O HAI IM Bullet
         ME'Z alive R WIN
     IF U SAY SO
 
-    HOW IZ I getRect YR destSize
-        I HAS A rect ITZ I IZ rectangle YR ME'Z position'Z x AN YR ME'Z position'Z y AN YR destSize'Z x AN YR destSize'Z y MKAY
-        FOUND YR rect
-    IF U SAY SO
-
     HOW IZ I updateBullet
         ME'Z position'Z y R SUM OF ME'Z position'Z y AN PRODUKT OF ME'Z speed AN I IZ RAYLIB'Z GETFRAMETIME MKAY
-        DIFFRINT ME'Z position'Z y AN BIGGR OF ME'Z position'Z y AN -30
+        EITHER OF ...
+        DIFFRINT ME'Z position'Z y AN BIGGR OF ME'Z position'Z y AN -30 AN ...
+        BOTH SAEM ME'Z position'Z y AN BIGGR OF ME'Z position'Z y AN 800.0
         O RLY?, YA RLY
             ME'Z alive R FAIL
         OIC
@@ -114,11 +119,17 @@ O HAI IM Bullet
     HOW IZ I drawBullet YR destSize
         I HAS A destRect ITZ I IZ rectangle YR ME'Z position'Z x AN YR ME'Z position'Z y AN YR destSize'Z x AN YR destSize'Z y MKAY
         I IZ drawTexturePro ...
-			YR ME'Z texture AN YR ME'Z originRect AN YR destRect ...
-			AN YR ME'Z origin AN YR 0.0 AN YR white ...
+            YR ME'Z texture AN YR ME'Z originRect AN YR destRect ...
+            AN YR ME'Z origin AN YR 0.0 AN YR white ...
         MKAY
     IF U SAY SO
+
+    HOW IZ I getRect YR destSize
+        I HAS A rect ITZ I IZ rectangle YR ME'Z position'Z x AN YR ME'Z position'Z y AN YR destSize'Z x AN YR destSize'Z y MKAY
+        FOUND YR rect
+    IF U SAY SO
 KTHX
+
 BTW --- End of Bullet object ---
 BTW --- Player object ---
 O HAI IM Player
@@ -131,10 +142,10 @@ O HAI IM Player
 	I HAS A ORIGIN ITZ I IZ vector2 YR 0.0 AN YR 0.0 MKAY
 
 	HOW IZ I initPlayer
-		ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/a_fk_leaf.png" MKAY
-		ME'Z position R I IZ rectangle YR 600.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
-		ME'Z lifes R 3
-		ME'Z hitbox R I IZ rectangle YR 100.0 AN YR 660.0 AN YR 20.0 AN YR 20.0 MKAY
+		ME HAS A texture ITZ I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/a_fk_leaf.png" MKAY
+		ME HAS A position ITZ I IZ rectangle YR 600.0 AN YR 660.0 AN YR 50.0 AN YR 50.0 MKAY
+		ME HAS A lifes ITZ 3
+		ME HAS A hitbox ITZ I IZ rectangle YR 100.0 AN YR 660.0 AN YR 20.0 AN YR 20.0 MKAY
 	IF U SAY SO
 
 	HOW IZ I movement
@@ -178,26 +189,42 @@ KTHX
 BTW --- End of Player object ---
 
 O HAI IM Block
-    I HAS A texture
+    I HAS A texture ITZ FAIL
 
     I HAS A source ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 50.0 AN YR 80.0 MKAY
     I HAS A ORIGIN ITZ I IZ vector2 YR 25.0 AN YR 40.0 MKAY
 
-    HOW IZ I initBlock
-        ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/syrup.png" MKAY
+    I HAS A pos
+    I HAS A startX
+    I HAS A alive
+
+    HOW IZ I initBlock YR pos AN YR startX
+        BOTH SAEM ME'Z texture AN FAIL
+        O RLY?, YA RLY
+            ME HAS A texture ITZ I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/syrup.png" MKAY
+        OIC
+        ME HAS A pos ITZ pos
+        ME HAS A startX ITZ startX
+        ME HAS A alive ITZ WIN
     IF U SAY SO
 
-    HOW IZ I checkCollisionBlock YR pos AN YR alive AN YR blockStart AN YR bulletRect
+    HOW IZ I checkCollisionBlock YR blockList AN YR bulletRect
         IM IN YR checkBlocks UPPIN YR i WILE DIFFRINT i AN 6
-            I HAS A collision ITZ I IZ checkCollisionRecs YR pos'Z SRS i AN YR bulletRect MKAY
-            I HAS A isAlive ITZ alive'Z SRS i
-            BOTH OF collision AN isAlive
+            I HAS A currentBlock ITZ blockList'Z SRS i
+            BTW Switch width and height since the block is rotated 90 degrees
+            I HAS A hitbox ITZ I IZ rectangle YR ...
+                DIFF OF currentBlock'Z pos'Z x AN QUOSHUNT OF currentBlock'Z pos'Z height AN 2 AN YR ...
+                DIFF OF currentBlock'Z pos'Z y AN QUOSHUNT OF currentBlock'Z pos'Z width AN 2 AN YR ...
+                currentBlock'Z pos'Z height AN YR currentBlock'Z pos'Z width ...
+            MKAY
+            I HAS A collision ITZ I IZ checkCollisionRecs YR hitbox AN YR bulletRect MKAY
+            BOTH OF collision AN currentBlock'Z alive
             O RLY?, YA RLY
-                BOTH SAEM blockStart'Z SRS i AN 100
+                BOTH SAEM currentBlock'Z startX AN 100
                 O RLY?, YA RLY
-                    alive'Z SRS i R FAIL
+                    currentBlock'Z alive R FAIL
                 NO WAI
-                    blockStart'Z SRS i R SUM OF blockStart'Z SRS i AN 50.0                
+                    currentBlock'Z startX R SUM OF currentBlock'Z startX AN 50.0
                 OIC
                 FOUND YR WIN
             OIC
@@ -205,26 +232,28 @@ O HAI IM Block
         FOUND YR FAIL
     IF U SAY SO
 
-    HOW IZ I drawBlock YR pos AN YR alive AN YR startX
-        IM IN YR drawBlocks UPPIN YR i WILE DIFFRINT i AN 6
-            alive'Z SRS i
-            O RLY?, YA RLY
-                ME'Z source'Z x R startX'Z SRS i
-                I IZ drawTexturePro ...
-                    YR ME'Z texture AN YR ME'Z source AN YR pos'Z SRS i ...
-                    AN YR ME'Z ORIGIN AN YR -1.570796 AN YR white ...
-                MKAY
-            OIC
-        IM OUTTA YR drawBlocks
+    HOW IZ I drawBlock
+        ME'Z alive
+        O RLY?, YA RLY
+            I HAS A sourceRect ITZ I IZ rectangle YR ME'Z startX AN YR ME'Z source'Z y AN YR ME'Z source'Z width AN YR ME'Z source'Z height MKAY
+            BTW I IZ RAYLIB'Z DRAWRECTANGLEREC YR DIFF OF ME'Z pos'Z x AN 40.0 AN YR DIFF OF ME'Z pos'Z y AN 25.0 AN YR ME'Z pos'Z height AN YR ME'Z pos'Z width AN YR white'Z r AN YR white'Z g AN YR white'Z b AN YR white'Z a MKAY
+            I IZ drawTexturePro ...
+                YR ME'Z texture AN YR sourceRect AN YR ME'Z pos ...
+                AN YR ME'Z ORIGIN AN YR -1.570796 AN YR white ...
+            MKAY
+        OIC
     IF U SAY SO
 KTHX
 BTW --- Star object ---
 BTW 39 ticks of movement to move down
 O HAI IM Star
-    I HAS A texture
+    I HAS A texture ITZ FAIL
 
 	I HAS A SOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 39.0 AN YR 37.0 MKAY
 	I HAS A ORIGIN ITZ I IZ vector2 YR 19.5 AN YR 18.5 MKAY
+
+    I HAS A BULLETSOURCE ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 30.0 AN YR 80.0 MKAY
+    I HAS A BULLETORIGIN ITZ I IZ vector2 YR 15.0 AN YR 40.0 MKAY
 
     I HAS A MAXTIMER ITZ 0.6
     I HAS A timer ITZ 0.6
@@ -232,22 +261,32 @@ O HAI IM Star
     I HAS A rightMost ITZ 5
     I HAS A direction ITZ 20.0
 
-    HOW IZ I initStar
-        ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/star.png" MKAY
+    I HAS A pos
+    I HAS A alive
+
+    HOW IZ I initStar YR pos
+        BOTH SAEM ME'Z texture AN FAIL
+        O RLY?, YA RLY
+            ME'Z texture R I IZ RAYLIB'Z LOADTEXTURE YR "assets/graphics/star.png" MKAY
+        OIC
+        ME HAS A pos ITZ pos
+        ME HAS A alive ITZ WIN
     IF U SAY SO
 
-    HOW IZ I checkCollision YR pos AN YR alive AN YR bulletRect
+    HOW IZ I collision YR starList AN YR bulletRect
         IM IN YR checkStars UPPIN YR n WILE DIFFRINT n AN 50
-            I HAS A collision ITZ I IZ checkCollisionRecs YR pos'Z SRS n AN YR bulletRect MKAY
-            I HAS A isAlive ITZ alive'Z SRS n
-            BOTH OF collision AN isAlive
+            I HAS A currentStar ITZ starList'Z SRS n
+            I HAS A pos ITZ currentStar'Z pos
+            I HAS A collision ITZ I IZ checkCollisionRecs YR pos AN YR bulletRect MKAY
+            BOTH OF collision AN currentStar'Z alive
             O RLY?, YA RLY
-                alive'Z SRS n R FAIL
+                currentStar'Z alive R FAIL
                 BOTH SAEM n AN ME'Z leftMost
                 O RLY?, YA RLY
                     IM IN YR getNewLeft UPPIN YR i WILE DIFFRINT i AN 50
                         I HAS A currentIndex ITZ SUM OF i AN n
-                        alive'Z SRS currentIndex, O RLY?, YA RLY
+                        I HAS A thisStar ITZ starList'Z SRS currentIndex
+                        thisStar'Z alive, O RLY?, YA RLY
                             ME'Z leftMost R currentIndex
                             VISIBLE "new leftmost found"
                             VISIBLE ME'Z leftMost
@@ -258,7 +297,8 @@ O HAI IM Star
                 MEBBE BOTH SAEM n AN ME'Z rightMost
                     IM IN YR getNewLeft NERFIN YR i WILE DIFFRINT i AN -50
                         I HAS A currentIndex ITZ SUM OF i AN n
-                        alive'Z SRS currentIndex, O RLY?, YA RLY
+                        I HAS A thisStar ITZ starList'Z SRS currentIndex
+                        thisStar'Z alive, O RLY?, YA RLY
                             ME'Z rightMost R currentIndex
                             VISIBLE "new rightmost found"
                             VISIBLE ME'Z rightMost
@@ -273,7 +313,7 @@ O HAI IM Star
         FOUND YR FAIL
     IF U SAY SO
 
-    HOW IZ I updateStar YR pos AN YR alive
+    HOW IZ I update YR starList
         I HAS A moveDown ITZ FAIL
         ME'Z timer R DIFF OF ME'Z timer AN I IZ RAYLIB'Z GETFRAMETIME MKAY
         BOTH SAEM ME'Z timer AN SMALLR OF ME'Z timer AN 0
@@ -282,9 +322,8 @@ O HAI IM Star
             I HAS A posToCheck ITZ A BUKKIT
             DIFFRINT ME'Z direction AN SMALLR OF ME'Z direction AN 0
             O RLY?, YA RLY
-                posToCheck R pos'Z SRS ME'Z rightMost
-                BTW VISIBLE posToCheck'Z x
-                BTW VISIBLE DIFF OF 1220 AN PRODUKT OF DIFF OF ME'Z rightMost AN 5 AN -20
+                posToCheck R starList'Z SRS ME'Z rightMost  BTW pos'Z SRS ME'Z rightMost
+                posToCheck R posToCheck'Z pos
                 BTW 1220 - (rightMost-5) * (-20) | rightMost goes from 5 to 0 -> results in 0, 20, 40... 100 -> 1220, 1200...
                 I HAS A starLimit ITZ DIFF OF 1220 AN PRODUKT OF DIFF OF ME'Z rightMost AN 5 AN -20
                 BOTH SAEM posToCheck'Z x AN BIGGR OF posToCheck'Z x AN starLimit
@@ -293,7 +332,8 @@ O HAI IM Star
                     ME'Z direction R PRODUKT OF -1 AN ME'Z direction
                 OIC
             NO WAI
-                posToCheck R pos'Z SRS ME'Z leftMost
+                posToCheck R starList'Z SRS ME'Z leftMost BTW pos'Z SRS ME'Z leftMost
+                posToCheck R posToCheck'Z pos
                 I HAS A starLimit ITZ SUM OF 40 AN PRODUKT OF ME'Z leftMost AN 20
                 BOTH SAEM posToCheck'Z x AN SMALLR OF posToCheck'Z x AN starLimit
                 O RLY?, YA RLY
@@ -302,8 +342,9 @@ O HAI IM Star
                 OIC
             OIC
             IM IN YR moveStars UPPIN YR n WILE DIFFRINT n AN 50
-                I HAS A pos ITZ starPosition'Z SRS n
-                alive'Z SRS n, O RLY?, YA RLY
+                I HAS A currentStar ITZ starList'Z SRS n
+                I HAS A pos ITZ currentStar'Z pos
+                currentStar'Z alive, O RLY?, YA RLY
                     moveDown, O RLY?, YA RLY
                         pos'Z y R SUM OF pos'Z y AN I IZ MATH'Z ABS YR ME'Z direction MKAY
                     NO WAI
@@ -314,15 +355,13 @@ O HAI IM Star
         OIC
     IF U SAY SO
 
-    HOW IZ I drawStar YR pos AN YR alive
-        IM IN YR drawStars UPPIN YR n WILE DIFFRINT n AN 50
-            alive'Z SRS n, O RLY?, YA RLY
-                I IZ drawTexturePro ...
-                    YR ME'Z texture AN YR ME'Z SOURCE AN YR pos'Z SRS n ...
-                    AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
-                MKAY
-            OIC
-        IM OUTTA YR drawStars
+    HOW IZ I draw
+        ME'Z alive, O RLY?, YA RLY
+            I IZ drawTexturePro ...
+                YR ME'Z texture AN YR ME'Z SOURCE AN YR ME'Z pos ...
+                AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
+            MKAY
+        OIC
     IF U SAY SO
 KTHX
 
@@ -358,59 +397,65 @@ I HAS A player ITZ LIEK A Player
 player IZ initPlayer MKAY
 
 I HAS A playerBullet ITZ LIEK A Bullet
-I IZ playerBullet'Z initBullet YR ...
+playerBullet IZ initBullet YR ...
     "assets/graphics/a_fk_leaf.png" AN YR ...
     player'Z SOURCE AN YR player'Z ORIGIN ...
 MKAY
 
-I HAS A block ITZ LIEK A Block
-block IZ initBlock MKAY
-I HAS A blockPosition ITZ A BUKKIT
-I HAS A blockStartX ITZ A BUKKIT
-I HAS A blockAlive ITZ A BUKKIT
+I HAS A blockList ITZ A BUKKIT
 IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
-    blockPosition HAS A SRS n ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
-    blockStartX HAS A SRS n ITZ 0.0
-    blockAlive HAS A SRS n ITZ WIN
+    blockList HAS A SRS n ITZ LIEK A Block
+    I HAS A currentBlock ITZ blockList'Z SRS n
+    I HAS A currentRect ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+    currentBlock IZ initBlock YR currentRect AN YR 0.0 MKAY
 IM OUTTA YR setPosition
 
-I HAS A star ITZ LIEK A Star
-star IZ initStar MKAY
-I HAS A starAlive ITZ A BUKKIT
-I HAS A starPosition ITZ A BUKKIT
+I HAS A starList ITZ A BUKKIT
 I HAS A starX ITZ 40.0
 I HAS A starY ITZ 30.0
-I HAS A starIndex ITZ 0
 I HAS A index ITZ 0
 IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 99 BTW 9 * 11
     I HAS A row ITZ QUOSHUNT OF n AN 11
     I HAS A col ITZ MOD OF n AN 11
     BOTH SAEM MOD OF SUM OF row AN col AN 2 AN 0
     O RLY?, YA RLY
-        starPosition HAS A SRS index ITZ I IZ rectangle YR SUM OF starX AN PRODUKT OF col AN 42.0 AN YR SUM OF starY AN PRODUKT OF row AN 40.0 AN YR 39.0 AN YR 37.0 MKAY
-        starAlive HAS A SRS index ITZ WIN
+        starList HAS A SRS index ITZ LIEK A Star
+        I HAS A currentStar ITZ starList'Z SRS index
+        I HAS A currentRect ITZ I IZ rectangle YR SUM OF starX AN PRODUKT OF col AN 42.0 AN YR SUM OF starY AN PRODUKT OF row AN 40.0 AN YR 39.0 AN YR 37.0 MKAY
+        currentStar IZ initStar YR currentRect MKAY
         index R SUM OF index AN 1
     OIC
 IM OUTTA YR setPosition
 
+I HAS A enemyBullet ITZ LIEK A Bullet
+I HAS A enemyBulletSource ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 30.0 AN YR 80.0 MKAY
+I HAS A enemyBulletOrigin ITZ I IZ vector2 YR 15.0 AN YR 40.0 MKAY
+enemyBullet IZ initBullet YR ...
+    "assets/graphics/boy.png" AN YR enemyBulletSource AN YR enemyBulletOrigin ...
+MKAY
+
 IM IN YR mainLoop
     player IZ updatePlayer MKAY
-    I IZ star'Z updateStar YR starPosition AN YR starAlive MKAY
+
+    Star IZ update YR starList MKAY
 
     playerBullet'Z alive
     O RLY?, YA RLY
         I HAS A destSize ITZ I IZ vector2 YR 20.0 AN YR 20.0 MKAY
-        I HAS A playerBulletRect ITZ playerBullet IZ getRect YR destSize MKAY
+        I HAS A playerBulletRect ITZ I IZ playerBullet'Z getRect YR destSize MKAY
+
         playerBullet IZ updateBullet MKAY
-        star IZ checkCollision YR starPosition AN YR starAlive AN YR playerBulletRect MKAY
+
+        Star IZ collision YR starList AN YR playerBulletRect MKAY
         O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
-        block IZ checkCollisionBlock YR blockPosition AN YR blockAlive AN YR blockStartX AN YR playerBulletRect MKAY
+
+        Block IZ checkCollisionBlock YR blockList AN YR playerBulletRect MKAY
         O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
     OIC
 
     BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
     O RLY?, YA RLY
-        playerBullet IZ setBullet YR player'Z position AN YR -200.0 MKAY
+        playerBullet IZ setBullet YR player'Z position AN YR -265.0 MKAY
     OIC
 
     I IZ RAYLIB'Z BEGINDRAW MKAY
@@ -421,19 +466,29 @@ IM IN YR mainLoop
     playerBullet'Z alive
     O RLY?, YA RLY
         I HAS A destSize ITZ I IZ vector2 YR 20.0 AN YR 20.0 MKAY
-        I IZ playerBullet'Z drawBullet YR destSize MKAY
+        I HAS A destSize2 ITZ I IZ vector2 YR 40.0 AN YR 40.0 MKAY
+        playerBullet IZ drawBullet YR destSize MKAY
     OIC
 
-    I IZ block'Z drawBlock YR blockPosition AN YR blockAlive AN YR blockStartX MKAY
-    I IZ star'Z drawStar YR starPosition AN YR starAlive MKAY
+    IM IN YR drawStars UPPIN YR n WILE DIFFRINT n AN 50        
+        I HAS A currentStar ITZ starList'Z SRS n
+        currentStar IZ draw MKAY
+    IM OUTTA YR drawStars
+
+    IM IN YR drawBlocks UPPIN YR n WILE DIFFRINT n AN 6
+        I HAS A currentBlock ITZ blockList'Z SRS n
+        currentBlock IZ drawBlock MKAY
+    IM OUTTA YR drawBlocks
+
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR mainLoop
 
+I IZ RAYLIB'Z UNLOADTEXTURE YR enemyBullet'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR playerBullet'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
-I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
-I IZ RAYLIB'Z UNLOADTEXTURE YR star'Z texture MKAY
+I IZ RAYLIB'Z UNLOADTEXTURE YR Block'Z texture MKAY
+I IZ RAYLIB'Z UNLOADTEXTURE YR Star'Z texture MKAY
 I IZ RAYLIB'Z CLOZEWINDUS MKAY
 
 KTHXBYE
