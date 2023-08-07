@@ -4,7 +4,7 @@ CAN HAS MATH?
 
 BTW Utils functions
 
-BTW This code was yoink'd from LOLTracer:
+BTW This random number gen code was yoink'd from LOLTracer:
 BTW https://github.com/LoganKelly/LOLTracer
 I HAS A prev ITZ 0
 I HAS A RAND_MAX ITZ 104729
@@ -68,6 +68,7 @@ I HAS A KEYW ITZ 87
 I HAS A KEYA ITZ 65
 I HAS A KEYS ITZ 83
 I HAS A KEYD ITZ 68
+I HAS A KEYR ITZ 82
 I HAS A KEYZ ITZ 90
 I HAS A KEYSPACE ITZ 32
 
@@ -271,6 +272,12 @@ O HAI IM Block
         ME HAS A alive ITZ WIN
     IF U SAY SO
 
+    HOW IZ I reset YR pos
+        ME'Z pos R pos
+        ME'Z startX R 0.0
+        ME'Z alive R WIN
+    IF U SAY SO
+
     HOW IZ I checkCollisionBlock YR blockList AN YR bulletRect
         IM IN YR checkBlocks UPPIN YR i WILE DIFFRINT i AN 6
             I HAS A currentBlock ITZ blockList'Z SRS i
@@ -323,6 +330,7 @@ O HAI IM Star
     I HAS A leftMost ITZ 0
     I HAS A rightMost ITZ 5
     I HAS A direction ITZ 20.0
+    I HAS A aliveCount ITZ 50
 
     I HAS A pos
     I HAS A alive
@@ -336,6 +344,12 @@ O HAI IM Star
         ME HAS A pos ITZ pos
         ME HAS A alive ITZ WIN
         ME HAS A angle ITZ 0.0
+    IF U SAY SO
+
+    HOW IZ I reset YR pos
+        ME'Z pos R pos
+        ME'Z alive R WIN
+        ME'Z angle R 0.0
     IF U SAY SO
 
     HOW IZ I collision YR starList AN YR bulletRect
@@ -440,7 +454,6 @@ BTW --- End of Star object ---
 
 OBTW
     TODO:
-    - Game over screen
     - The less star alive are, the faster they should move
     - Start a new game when all stars are dead
     - Add sounds, music (must add them to raylib bindings first)
@@ -521,58 +534,103 @@ IM IN YR createEnemyBullet UPPIN YR n WILE DIFFRINT n AN 3
     MKAY
 IM OUTTA YR createEnemyBullet
 
+I HAS A gameover ITZ FAIL
+
 IM IN YR mainLoop
-    player IZ updatePlayer MKAY
-    Star IZ update YR starList MKAY
+    NOT gameover, O RLY?, YA RLY
+        player IZ updatePlayer MKAY
+        Star IZ update YR starList MKAY
 
-    playerBullet'Z alive
-    O RLY?, YA RLY
-        I HAS A destSize ITZ I IZ vector2 YR 20.0 AN YR 20.0 MKAY
-        I HAS A playerBulletRect ITZ I IZ playerBullet'Z getRekt YR destSize MKAY
-
-        playerBullet IZ updateBullet MKAY
-
-        Star IZ collision YR starList AN YR playerBulletRect MKAY
+        playerBullet'Z alive
         O RLY?, YA RLY
-            playerBullet'Z alive R FAIL
-        NO WAI
-            Block IZ checkCollisionBlock YR blockList AN YR playerBulletRect MKAY
-            O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
-        OIC
-    OIC
+            I HAS A destSize ITZ I IZ vector2 YR 20.0 AN YR 20.0 MKAY
+            I HAS A playerBulletRect ITZ I IZ playerBullet'Z getRekt YR destSize MKAY
 
-    BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
-    O RLY?, YA RLY
-        playerBullet IZ setBullet YR player'Z position AN YR -265.0 MKAY
-    OIC
+            playerBullet IZ updateBullet MKAY
 
-    IM IN YR enemyShoot UPPIN YR n WILE DIFFRINT n AN 3
-        I HAS A currentBullet ITZ enemyBulletList'Z SRS n
-        currentBullet'Z alive
-        O RLY?, YA RLY,
-            I HAS A destSize ITZ I IZ vector2 YR 30.0 AN YR 80.0 MKAY
-            I HAS A enemyBulletRect ITZ I IZ currentBullet'Z getRekt YR destSize MKAY
-            currentBullet IZ updateBullet MKAY
-            BTW Star IZ collision YR starList AN YR playerBulletRect MKAY
-            BTW O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
-            Player IZ collision YR enemyBulletRect MKAY
+            Star IZ collision YR starList AN YR playerBulletRect MKAY
             O RLY?, YA RLY
-                currentBullet'Z alive R FAIL
-                VISIBLE "GAME VOER"
-                BTW TODO: Game mover message
+                playerBullet'Z alive R FAIL
+                Star'Z aliveCount R DIFF OF Star'Z aliveCount AN 1
+                Star'Z aliveCount, WTF?
+                    OMG 25, Star'Z MAXTIMER R 0.4, GTFO
+                    OMG 10, Star'Z MAXTIMER R 0.3, GTFO
+                    OMG 2, Star'Z MAXTIMER R 0.13, GTFO
+                    OMG 1, Star'Z MAXTIMER R 0.08, GTFO
+                OIC
+                BTW Star'Z MAXTIMER R DIFF OF Star'Z timer AN 0.002
             NO WAI
-                Block IZ checkCollisionBlock YR blockList AN YR enemyBulletRect MKAY
-                O RLY?, YA RLY, currentBullet'Z alive R FAIL, OIC
+                Block IZ checkCollisionBlock YR blockList AN YR playerBulletRect MKAY
+                O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
             OIC
-        NO WAI
-            currentBullet IZ updateTimer YR starList MKAY
         OIC
-    IM OUTTA YR enemyShoot
+
+        BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
+        O RLY?, YA RLY
+            playerBullet IZ setBullet YR player'Z position AN YR -265.0 MKAY
+        OIC
+
+        IM IN YR enemyShoot UPPIN YR n WILE DIFFRINT n AN 3
+            I HAS A currentBullet ITZ enemyBulletList'Z SRS n
+            currentBullet'Z alive
+            O RLY?, YA RLY,
+                I HAS A destSize ITZ I IZ vector2 YR 30.0 AN YR 80.0 MKAY
+                I HAS A enemyBulletRect ITZ I IZ currentBullet'Z getRekt YR destSize MKAY
+                currentBullet IZ updateBullet MKAY
+                BTW Star IZ collision YR starList AN YR playerBulletRect MKAY
+                BTW O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
+                Player IZ collision YR enemyBulletRect MKAY
+                O RLY?, YA RLY
+                    currentBullet'Z alive R FAIL
+                    gameover R WIN
+                    GTFO
+                NO WAI
+                    Block IZ checkCollisionBlock YR blockList AN YR enemyBulletRect MKAY
+                    O RLY?, YA RLY, currentBullet'Z alive R FAIL, OIC
+                OIC
+            NO WAI
+                currentBullet IZ updateTimer YR starList MKAY
+            OIC
+        IM OUTTA YR enemyShoot
+    NO WAI
+        I IZ RAYLIB'Z IZKEYPRESSED YR KEYR MKAY
+        O RLY?, YA RLY
+            gameover R FAIL
+
+            Star'Z leftMost R 0
+            Star'Z rightMost R 5
+            Star'Z MAXTIMER R 0.6
+            Star'Z aliveCount R 50
+            BTW Reset stars
+            index R 0
+            IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 99 BTW 9 * 11
+                I HAS A row ITZ QUOSHUNT OF n AN 11
+                I HAS A col ITZ MOD OF n AN 11
+                BOTH SAEM MOD OF SUM OF row AN col AN 2 AN 0
+                O RLY?, YA RLY
+                    I HAS A currentStar ITZ starList'Z SRS index
+                    I HAS A currentRect ITZ I IZ rectangle YR SUM OF starX AN PRODUKT OF col AN 42.0 AN YR SUM OF starY AN PRODUKT OF row AN 40.0 AN YR 39.0 AN YR 37.0 MKAY
+                    currentStar IZ reset YR currentRect MKAY
+                    index R SUM OF index AN 1
+                OIC
+            IM OUTTA YR setPosition
+
+            BTW Reset blocks
+            IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
+                I HAS A currentBlock ITZ blockList'Z SRS n
+                I HAS A currentRect ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+                currentBlock IZ reset YR currentRect MKAY
+            IM OUTTA YR setPosition
+        OIC
+    OIC
 
     I IZ RAYLIB'Z BEGINDRAW MKAY
     I IZ RAYLIB'Z BAKGROUND YR 0 AN YR 0 AN YR 0 AN YR 255 MKAY
     I IZ drawBackground MKAY
-    I IZ player'Z drawPlayer MKAY
+    
+    NOT gameover, O RLY?, YA RLY
+        I IZ player'Z drawPlayer MKAY
+    OIC
 
     playerBullet'Z alive
     O RLY?, YA RLY
@@ -598,6 +656,13 @@ IM IN YR mainLoop
         I HAS A currentBlock ITZ blockList'Z SRS n
         currentBlock IZ drawBlock MKAY
     IM OUTTA YR drawBlocks
+
+    gameover, O RLY?, YA RLY
+        I IZ RAYLIB'Z TEXT YR ...
+            "Game over! Press R to restart" AN YR ...
+            100 AN YR 300 AN YR 70 AN YR 0 AN YR 0 AN YR 0 AN YR 255 ...
+        MKAY
+    OIC
 
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC

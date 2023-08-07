@@ -1,6 +1,6 @@
 BTW Utils functions
 
-BTW This random number gen code was yoink'd from LOLTracer:
+BTW This random number code was yoink'd from LOLTracer:
 BTW https://github.com/LoganKelly/LOLTracer
 I HAS A prev ITZ 0
 I HAS A RAND_MAX ITZ 104729
@@ -64,6 +64,7 @@ I HAS A KEYW ITZ 87
 I HAS A KEYA ITZ 65
 I HAS A KEYS ITZ 83
 I HAS A KEYD ITZ 68
+I HAS A KEYR ITZ 82
 I HAS A KEYZ ITZ 90
 I HAS A KEYSPACE ITZ 32
 

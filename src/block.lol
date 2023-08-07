@@ -19,6 +19,12 @@ O HAI IM Block
         ME HAS A alive ITZ WIN
     IF U SAY SO
 
+    HOW IZ I reset YR pos
+        ME'Z pos R pos
+        ME'Z startX R 0.0
+        ME'Z alive R WIN
+    IF U SAY SO
+
     HOW IZ I checkCollisionBlock YR blockList AN YR bulletRect
         IM IN YR checkBlocks UPPIN YR i WILE DIFFRINT i AN 6
             I HAS A currentBlock ITZ blockList'Z SRS i

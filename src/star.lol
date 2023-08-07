@@ -14,6 +14,7 @@ O HAI IM Star
     I HAS A leftMost ITZ 0
     I HAS A rightMost ITZ 5
     I HAS A direction ITZ 20.0
+    I HAS A aliveCount ITZ 50
 
     I HAS A pos
     I HAS A alive
@@ -27,6 +28,12 @@ O HAI IM Star
         ME HAS A pos ITZ pos
         ME HAS A alive ITZ WIN
         ME HAS A angle ITZ 0.0
+    IF U SAY SO
+
+    HOW IZ I reset YR pos
+        ME'Z pos R pos
+        ME'Z alive R WIN
+        ME'Z angle R 0.0
     IF U SAY SO
 
     HOW IZ I collision YR starList AN YR bulletRect
