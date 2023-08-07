@@ -17,6 +17,7 @@ O HAI IM Star
 
     I HAS A pos
     I HAS A alive
+    I HAS A angle
 
     HOW IZ I initStar YR pos
         BOTH SAEM ME'Z texture AN FAIL
@@ -25,6 +26,7 @@ O HAI IM Star
         OIC
         ME HAS A pos ITZ pos
         ME HAS A alive ITZ WIN
+        ME HAS A angle ITZ 0.0
     IF U SAY SO
 
     HOW IZ I collision YR starList AN YR bulletRect
@@ -99,6 +101,9 @@ O HAI IM Star
                 I HAS A currentStar ITZ starList'Z SRS n
                 I HAS A pos ITZ currentStar'Z pos
                 currentStar'Z alive, O RLY?, YA RLY
+                    currentStar'Z angle R SUM OF currentStar'Z angle AN 9.0
+                    BOTH SAEM currentStar'Z angle AN BIGGR OF currentStar'Z angle AN 360
+                    O RLY?, YA RLY, currentStar'Z angle R 0.0, OIC
                     moveDown, O RLY?, YA RLY
                         pos'Z y R SUM OF pos'Z y AN I IZ MATH'Z ABS YR ME'Z direction MKAY
                     NO WAI
@@ -111,9 +116,12 @@ O HAI IM Star
 
     HOW IZ I draw
         ME'Z alive, O RLY?, YA RLY
+            BTW ME'Z angle R SUM OF ME'Z angle AN 0.01
+            BTW BOTH SAEM ME'Z angle AN BIGGR OF ME'Z angle AN 360
+            BTW O RLY?, YA RLY, ME'Z angle R 0.0, OIC
             I IZ drawTexturePro ...
                 YR ME'Z texture AN YR ME'Z SOURCE AN YR ME'Z pos ...
-                AN YR ME'Z ORIGIN AN YR 0.0 AN YR white ...
+                AN YR ME'Z ORIGIN AN YR ME'Z angle AN YR white ...
             MKAY
         OIC
     IF U SAY SO

@@ -1,5 +1,23 @@
 BTW Utils functions
 
+BTW This random number gen code was yoink'd from LOLTracer:
+BTW https://github.com/LoganKelly/LOLTracer
+I HAS A prev ITZ 0
+I HAS A RAND_MAX ITZ 104729
+
+BTW 0 to RAND_MAX
+HOW IZ I randin
+    I HAS A a ITZ 33083
+    I HAS A c ITZ 67607
+    prev R MOD OF SUM OF PRODUKT OF prev AN a AN c AN RAND_MAX
+    FOUND YR prev
+IF U SAY SO
+
+BTW a to b, b > a
+HOW IZ I random YR a AN YR b
+    FOUND YR SUM OF a AN MOD OF I IZ randin MKAY AN DIFF OF b AN a
+IF U SAY SO
+
 BTW --- Color creator ---
 HOW IZ I color YR red AN YR green AN YR blue AN YR alpha
 	I HAS A array ITZ A BUKKIT
