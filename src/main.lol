@@ -8,15 +8,6 @@ BTW INCLUDE "player.lol" PLS
 BTW INCLUDE "block.lol" PLS
 BTW INCLUDE "star.lol" PLS
 
-OBTW
-    TOFIX:
-        When the last star alive is not on the first line (0 - 5), it goes
-        out of the screen.
-    TODO:
-    - Start a new game when all stars are dead
-    - Add sounds, music (must add them to raylib bindings first)
-TLDR
-
 HOW IZ I drawBackground
     I HAS A rectStripe ITZ I IZ rectangle YR 0.0 AN YR 0.0 AN YR 1260.0 AN YR 55.0 MKAY
     IM IN YR stripes UPPIN YR n WILE DIFFRINT n AN 13
@@ -93,11 +84,33 @@ IM IN YR createEnemyBullet UPPIN YR n WILE DIFFRINT n AN 3
 IM OUTTA YR createEnemyBullet
 
 I HAS A gameover ITZ FAIL
+I HAS A levelComplete ITZ FAIL
+
+I IZ RAYLIB'Z INITAUDIODEVICE MKAY
+
+I HAS A music ITZ I IZ RAYLIB'Z LOADMUSIC YR "assets/music/Boss.wav" MKAY
+I IZ RAYLIB'Z PLAYMUSIC YR music MKAY
+
+I HAS A glassCrack ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/554570__greg_surr__glass-shatter-5.wav" MKAY
+I HAS A glassShatter ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/202093__spookymodem__bottle-shattering.wav" MKAY
+I HAS A starDeath ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/supernova.wav" MKAY
+I HAS A shoot ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/shoot.wav" MKAY
+I HAS A playerDeath ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/death.wav" MKAY
+
+I HAS A score ITZ 0
 
 IM IN YR mainLoop
-    NOT gameover, O RLY?, YA RLY
+    BOTH OF NOT gameover AN NOT levelComplete, O RLY?, YA RLY
+        I IZ RAYLIB'Z UPDATEMUSIC YR music MKAY
         player IZ updatePlayer MKAY
         Star IZ update YR starList MKAY
+        gameover R Star IZ starReachedBottom YR starList MKAY
+        gameover, O RLY?, YA RLY, I IZ RAYLIB'Z PLAYSOUND YR playerDeath MKAY, OIC
+
+        BOTH SAEM Star'Z aliveCount AN 0
+        O RLY?, YA RLY
+            levelComplete R WIN
+        OIC
 
         playerBullet'Z alive
         O RLY?, YA RLY
@@ -108,23 +121,34 @@ IM IN YR mainLoop
 
             Star IZ collision YR starList AN YR playerBulletRect MKAY
             O RLY?, YA RLY
+                I IZ RAYLIB'Z PLAYSOUND YR starDeath MKAY
                 playerBullet'Z alive R FAIL
+                score R SUM OF score AN 1776
                 Star'Z aliveCount R DIFF OF Star'Z aliveCount AN 1
                 Star'Z aliveCount, WTF?
                     OMG 25, Star'Z MAXTIMER R 0.4, GTFO
                     OMG 10, Star'Z MAXTIMER R 0.3, GTFO
                     OMG 2, Star'Z MAXTIMER R 0.13, GTFO
                     OMG 1, Star'Z MAXTIMER R 0.08, GTFO
+                    OMGWTF, GTFO
                 OIC
                 BTW Star'Z MAXTIMER R DIFF OF Star'Z timer AN 0.002
             NO WAI
-                Block IZ checkCollisionBlock YR blockList AN YR playerBulletRect MKAY
-                O RLY?, YA RLY, playerBullet'Z alive R FAIL, OIC
+                I HAS A col ITZ Block IZ checkCollisionBlock YR blockList AN YR playerBulletRect MKAY
+                BOTH SAEM col AN 1
+                O RLY?, YA RLY
+                    I IZ RAYLIB'Z PLAYSOUND YR glassCrack MKAY
+                    playerBullet'Z alive R FAIL
+                MEBBE BOTH SAEM col AN 0
+                    I IZ RAYLIB'Z PLAYSOUND YR glassShatter MKAY
+                    playerBullet'Z alive R FAIL
+                OIC
             OIC
         OIC
 
         BOTH OF I IZ RAYLIB'Z IZKEYPRESSED YR KEYSPACE MKAY AN NOT playerBullet'Z alive
         O RLY?, YA RLY
+            I IZ RAYLIB'Z PLAYSOUND YR shoot MKAY
             playerBullet IZ setBullet YR player'Z position AN YR -265.0 MKAY
         OIC
 
@@ -143,18 +167,24 @@ IM IN YR mainLoop
                     gameover R WIN
                     GTFO
                 NO WAI
-                    Block IZ checkCollisionBlock YR blockList AN YR enemyBulletRect MKAY
-                    O RLY?, YA RLY, currentBullet'Z alive R FAIL, OIC
+                    I HAS A col ITZ Block IZ checkCollisionBlock YR blockList AN YR enemyBulletRect MKAY
+                    BOTH SAEM col AN 1
+                    O RLY?, YA RLY,
+                        I IZ RAYLIB'Z PLAYSOUND YR glassCrack MKAY
+                        currentBullet'Z alive R FAIL
+                    MEBBE BOTH SAEM col AN 0
+                        I IZ RAYLIB'Z PLAYSOUND YR glassShatter MKAY
+                        currentBullet'Z alive R FAIL
+                    OIC
                 OIC
             NO WAI
                 currentBullet IZ updateTimer YR starList MKAY
             OIC
         IM OUTTA YR enemyShoot
-    NO WAI
+    MEBBE EITHER OF gameover AN levelComplete
         I IZ RAYLIB'Z IZKEYPRESSED YR KEYR MKAY
         O RLY?, YA RLY
             gameover R FAIL
-
             Star'Z leftMost R 0
             Star'Z rightMost R 5
             Star'Z MAXTIMER R 0.6
@@ -174,11 +204,15 @@ IM IN YR mainLoop
             IM OUTTA YR setPosition
 
             BTW Reset blocks
-            IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
-                I HAS A currentBlock ITZ blockList'Z SRS n
-                I HAS A currentRect ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
-                currentBlock IZ reset YR currentRect MKAY
-            IM OUTTA YR setPosition
+            NOT levelComplete, O RLY?, YA RLY
+                score R 0
+                IM IN YR setPosition UPPIN YR n WILE DIFFRINT n AN 6
+                    I HAS A currentBlock ITZ blockList'Z SRS n
+                    I HAS A currentRect ITZ I IZ rectangle YR SUM OF 120.0 AN PRODUKT OF 200.0 AN n AN YR 600.0 AN YR 50.0 AN YR 80.0 MKAY
+                    currentBlock IZ reset YR currentRect MKAY
+                IM OUTTA YR setPosition
+            OIC
+            levelComplete R FAIL
         OIC
     OIC
 
@@ -220,17 +254,32 @@ IM IN YR mainLoop
             "Game over! Press R to restart" AN YR ...
             100 AN YR 300 AN YR 70 AN YR 0 AN YR 0 AN YR 0 AN YR 255 ...
         MKAY
+    MEBBE levelComplete
+        I IZ RAYLIB'Z TEXT YR ...
+            "Level complete! Press R to continue" AN YR ...
+            5 AN YR 300 AN YR 50 AN YR 0 AN YR 0 AN YR 0 AN YR 255 ...
+        MKAY
     OIC
+
+    I HAS A scoreStr ITZ SMOOSH "SCORE: " score MKAY
+    I IZ RAYLIB'Z TEXT YR scoreStr AN YR 10 AN YR 10 AN YR 30 AN YR 0 AN YR 0 AN YR 0 AN YR 255 MKAY
 
     I IZ RAYLIB'Z STOPDRAW MKAY
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR mainLoop
 
-I IZ RAYLIB'Z UNLOADTEXTURE YR enemyBullet'Z texture MKAY
+I IZ RAYLIB'Z UNLOADMUSIC YR music MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR glassCrack MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR glassShatter MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR starDeath MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR shoot MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR starDeath MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR playerBullet'Z texture MKAY
-I IZ RAYLIB'Z UNLOADTEXTURE YR player'Z texture MKAY
+I IZ RAYLIB'Z UNLOADTEXTURE YR Bullet'Z texture MKAY
+I IZ RAYLIB'Z UNLOADTEXTURE YR Player'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Block'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Star'Z texture MKAY
+I IZ RAYLIB'Z CLOSEAUDIODEVICE MKAY
 I IZ RAYLIB'Z CLOZEWINDUS MKAY
 
 KTHXBYE

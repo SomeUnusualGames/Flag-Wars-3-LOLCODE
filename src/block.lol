@@ -40,13 +40,14 @@ O HAI IM Block
                 BOTH SAEM currentBlock'Z startX AN 100
                 O RLY?, YA RLY
                     currentBlock'Z alive R FAIL
+                    FOUND YR 0
                 NO WAI
                     currentBlock'Z startX R SUM OF currentBlock'Z startX AN 50.0
+                    FOUND YR 1
                 OIC
-                FOUND YR WIN
             OIC
         IM OUTTA YR checkBlocks
-        FOUND YR FAIL
+        FOUND YR -1
     IF U SAY SO
 
     HOW IZ I drawBlock

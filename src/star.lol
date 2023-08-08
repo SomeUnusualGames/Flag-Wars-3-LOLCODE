@@ -40,39 +40,52 @@ O HAI IM Star
         IM IN YR checkStars UPPIN YR n WILE DIFFRINT n AN 50
             I HAS A currentStar ITZ starList'Z SRS n
             I HAS A pos ITZ currentStar'Z pos
-            I HAS A collision ITZ I IZ checkCollisionRecs YR pos AN YR bulletRect MKAY
-            BOTH OF collision AN currentStar'Z alive
+            I HAS A coll ITZ I IZ checkCollisionRecs YR pos AN YR bulletRect MKAY
+            BOTH OF coll AN currentStar'Z alive
             O RLY?, YA RLY
                 currentStar'Z alive R FAIL
                 BOTH SAEM n AN ME'Z leftMost
                 O RLY?, YA RLY
                     IM IN YR getNewLeft UPPIN YR i WILE DIFFRINT i AN 50
                         I HAS A currentIndex ITZ SUM OF i AN n
+                        BOTH SAEM currentIndex AN 50
+                        O RLY?, YA RLY, ME'Z leftMost R 0, GTFO, OIC
                         I HAS A thisStar ITZ starList'Z SRS currentIndex
                         thisStar'Z alive, O RLY?, YA RLY
-                            ME'Z leftMost R currentIndex
-                            VISIBLE "new leftmost found"
-                            VISIBLE ME'Z leftMost
+                            ME'Z leftMost R MOD OF currentIndex AN 5
                             FOUND YR WIN
                         OIC
                     IM OUTTA YR getNewLeft
-                    BTW No new leftMost star found... player won? Maybe check if leftMost = rightMost
+                    BTW No new leftMost star found...
                 MEBBE BOTH SAEM n AN ME'Z rightMost
-                    IM IN YR getNewLeft NERFIN YR i WILE DIFFRINT i AN -50
+                    IM IN YR getNewRight NERFIN YR i WILE DIFFRINT i AN -50
                         I HAS A currentIndex ITZ SUM OF i AN n
+                        BOTH SAEM currentIndex AN -1
+                        O RLY?, YA RLY, ME'Z rightMost R 5, GTFO, OIC
                         I HAS A thisStar ITZ starList'Z SRS currentIndex
                         thisStar'Z alive, O RLY?, YA RLY
-                            ME'Z rightMost R currentIndex
-                            VISIBLE "new rightmost found"
-                            VISIBLE ME'Z rightMost
+                            ME'Z rightMost R MOD OF currentIndex AN 5
                             FOUND YR WIN
                         OIC
-                    IM OUTTA YR getNewLeft
-                    BTW No new rightMost star found... player won? Maybe check if leftMost = rightMost
+                    IM OUTTA YR getNewRight
+                    BTW No new rightMost star found...
                 OIC
                 FOUND YR WIN
             OIC
         IM OUTTA YR checkStars
+        FOUND YR FAIL
+    IF U SAY SO
+
+    HOW IZ I starReachedBottom YR starList
+        IM IN YR checkBottom NERFIN YR i WILE DIFFRINT i AN -50
+            I HAS A index ITZ SUM OF 49 AN i
+            I HAS A thisStar ITZ starList'Z SRS index
+            thisStar'Z alive, O RLY?, YA RLY
+                I HAS A pos ITZ thisStar'Z pos
+                FOUND YR BOTH SAEM pos'Z y AN BIGGR OF pos'Z y AN 590
+            OIC
+        IM OUTTA YR checkBottom
+        BTW No stars alive
         FOUND YR FAIL
     IF U SAY SO
 
@@ -107,7 +120,7 @@ O HAI IM Star
             IM IN YR moveStars UPPIN YR n WILE DIFFRINT n AN 50
                 I HAS A currentStar ITZ starList'Z SRS n
                 I HAS A pos ITZ currentStar'Z pos
-                currentStar'Z alive, O RLY?, YA RLY
+                BTW currentStar'Z alive, O RLY?, YA RLY
                     currentStar'Z angle R SUM OF currentStar'Z angle AN 9.0
                     BOTH SAEM currentStar'Z angle AN BIGGR OF currentStar'Z angle AN 360
                     O RLY?, YA RLY, currentStar'Z angle R 0.0, OIC
@@ -116,7 +129,7 @@ O HAI IM Star
                     NO WAI
                         pos'Z x R SUM OF pos'Z x AN ME'Z direction
                     OIC
-                OIC
+                BTW OIC
             IM OUTTA YR moveStars
         OIC
     IF U SAY SO
