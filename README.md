@@ -1,4 +1,16 @@
+# Flag-Wars-3-LOLCODE
+
+Source code for the game Flag Wars 3: America Invaders made in LOLCODE.
+
+Depends on:
+- Raylib 4.x
+- LOLCODE 1.4 with raylib bindings (see below)
+
+This code as it is won't run on any LOLCODE interpreter because it is necessary to add raylib to it.
+
 # lci bindings
+
+[Bindings here.](https://gist.github.com/SomeUnusualGames/4b9239eeacedde28182a244655cc1746)
 
 This is my implementation of lci `bindings.c` adding some of raylib's functions. I used raylib 4.0, but since the functions used are pretty simple it should work on most future versions.
 
