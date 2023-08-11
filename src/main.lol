@@ -93,7 +93,6 @@ I IZ RAYLIB'Z PLAYMUSIC YR music MKAY
 
 I HAS A glassCrack ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/554570__greg_surr__glass-shatter-5.wav" MKAY
 I HAS A glassShatter ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/202093__spookymodem__bottle-shattering.wav" MKAY
-I HAS A starDeath ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/supernova.wav" MKAY
 I HAS A shoot ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/shoot.wav" MKAY
 I HAS A playerDeath ITZ I IZ RAYLIB'Z LOADSOUND YR "assets/sfx/death.wav" MKAY
 
@@ -121,7 +120,6 @@ IM IN YR mainLoop
 
             Star IZ collision YR starList AN YR playerBulletRect MKAY
             O RLY?, YA RLY
-                I IZ RAYLIB'Z PLAYSOUND YR starDeath MKAY
                 playerBullet'Z alive R FAIL
                 score R SUM OF score AN 1776
                 Star'Z aliveCount R DIFF OF Star'Z aliveCount AN 1
@@ -268,17 +266,17 @@ IM IN YR mainLoop
     I IZ RAYLIB'Z CLOZE MKAY, O RLY?, YA RLY, GTFO, OIC
 IM OUTTA YR mainLoop
 
-I IZ RAYLIB'Z UNLOADMUSIC YR music MKAY
-I IZ RAYLIB'Z UNLOADSOUND YR glassCrack MKAY
-I IZ RAYLIB'Z UNLOADSOUND YR glassShatter MKAY
-I IZ RAYLIB'Z UNLOADSOUND YR starDeath MKAY
-I IZ RAYLIB'Z UNLOADSOUND YR shoot MKAY
-I IZ RAYLIB'Z UNLOADSOUND YR starDeath MKAY
+
 I IZ RAYLIB'Z UNLOADTEXTURE YR playerBullet'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Bullet'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Player'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Block'Z texture MKAY
 I IZ RAYLIB'Z UNLOADTEXTURE YR Star'Z texture MKAY
+
+I IZ RAYLIB'Z UNLOADMUSIC YR music MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR glassCrack MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR glassShatter MKAY
+I IZ RAYLIB'Z UNLOADSOUND YR shoot MKAY
 I IZ RAYLIB'Z CLOSEAUDIODEVICE MKAY
 I IZ RAYLIB'Z CLOZEWINDUS MKAY
 
