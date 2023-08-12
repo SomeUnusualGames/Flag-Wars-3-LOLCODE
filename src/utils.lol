@@ -9,6 +9,7 @@ BTW 0 to RAND_MAX
 HOW IZ I randin
     I HAS A a ITZ 33083
     I HAS A c ITZ 67607
+    BTW ((prev * a) + c) % RAND_MAX)
     prev R MOD OF SUM OF PRODUKT OF prev AN a AN c AN RAND_MAX
     FOUND YR prev
 IF U SAY SO
