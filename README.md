@@ -8,6 +8,10 @@ Depends on:
 
 This code as it is won't run on any LOLCODE interpreter because it is necessary to add raylib to it.
 
+Watch on Youtube (click the image):
+
+[![IMAGE ALT TEXT HERE](https://i3.ytimg.com/vi/jZorWrmubys/maxresdefault.jpg)](https://www.youtube.com/watch?v=jZorWrmubys)
+
 # lci bindings
 
 [Bindings here.](https://gist.github.com/SomeUnusualGames/4b9239eeacedde28182a244655cc1746)
